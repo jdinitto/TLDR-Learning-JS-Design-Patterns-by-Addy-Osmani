@@ -1,5 +1,9 @@
 
-# TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani
+# A Fork of "TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani"
+
+I created a fork of the original for safekeeping and to add my own personal notes and code where applicable.
+
+--------
 
 A **too long; didn't read** summary of the book [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) by [Addy Osmani](https://github.com/addyosmani)
 
