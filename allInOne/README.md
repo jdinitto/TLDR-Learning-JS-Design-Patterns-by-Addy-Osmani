@@ -80,5 +80,5 @@ Object constructors are used to create specific types of objects - both preparin
 
 ```
 
-Above, a single instance of toString() will now be shared between all of the Car objec
+Above, a single instance of toString() will now be shared between all of the Car objects.
 
