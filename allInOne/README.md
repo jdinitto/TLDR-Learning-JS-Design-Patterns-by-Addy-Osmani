@@ -30,7 +30,7 @@ Behavioral patterns focus on improving or streamlining the communication between
 Patterns: *Iterator, Mediator, Observer and Visitor*
 
 # Design Patterns
-- [Constructor Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/constructor-pattern.md)
+- [Constructor Pattern](#constructor)
 - [Module Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/module-pattern.md)
 - [Revealing Module Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/revealing-module-pattern.md)
 - [Singleton Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/singleton-pattern.md)
@@ -49,4 +49,38 @@ Patterns: *Iterator, Mediator, Observer and Visitor*
 Don't be shy! Lets make the docs better to help out our other fellow devs to learn design patterns in JavaScript.
 
 Please do review the [book](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) first before making any PR fixes/additions to the `master`. Thanks!
+
+# [Constructor Pattern](#constructor)
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript).
+
+### TL;DR
+
+Object constructors are used to create specific types of objects - both preparing the object for use and accepting arguments which a constructor can use to set the values of member properties and methods when the object is first created.
+
+```javascript
+
+    function Car(model, year, miles) {
+        this.model = model;
+        this.year = year;
+        this.miles = miles;
+    }
+
+    Car.prototype.toString = function () {
+        return this.model + " has done " + this.miles + " miles";
+    };
+
+    // We can create new instances of the car
+    var civic = new Car("Honda Civic", 2009, 20000);
+    var mondeo = new Car("Ford Mondeo", 2010, 5000);
+
+    // and then open our browser console to view the
+    // output of the toString() method being called on
+    // these objects
+    console.log(civic.toString());
+    console.log(mondeo.toString());
+
+```
+
+Above, a single instance of toString() will now be shared between all of the Car objec
 
