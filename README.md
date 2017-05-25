@@ -1,7 +1,7 @@
 
 # A Fork of "TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani"
 
-I created a fork of the original for safekeeping and to add my own personal notes and code where applicable.
+Creating an "all-in-one" README file for all the patterns. I will include this introductory README as well.
 
 --------
 
