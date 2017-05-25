@@ -33,7 +33,8 @@ Behavioral patterns focus on improving or streamlining the communication between
 
 Patterns: *Iterator, Mediator, Observer and Visitor*
 
-# Design Patterns<a name="toc"></a>
+<a name="toc"></a>
+# Design Patterns
 - [Constructor Pattern](#constructor)
 - [Module Pattern](#module)
 - [Revealing Module Pattern](#revealing-module)
@@ -48,7 +49,8 @@ Patterns: *Iterator, Mediator, Observer and Visitor*
 - [Decorator Pattern](#decorator)
 - [Flyweight Pattern](#flyweight)
 
-# Constructor Pattern<a name="constructor"></a>
+<a name="constructor"></a>
+# Constructor Pattern
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript).
 
@@ -84,7 +86,8 @@ Above, a single instance of toString() will now be shared between all of the Car
 
 [Return to Table of Contents](#toc)
 
-# Module Pattern<a name="module"></a>
+<a name="module"></a>
+# Module Pattern
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
 
@@ -191,7 +194,8 @@ myRevealingModule.setName("Paul Kinlan");
 
 [Return to Table of Contents](#toc)
 
-# Singleton Pattern<a name="singleton"></a>
+<a name="singleton"></a>
+# Singleton Pattern
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#singletonpatternjavascript).
 
@@ -317,7 +321,8 @@ console.log( badSingleA.getRandomNumber() !== badSingleB.getRandomNumber() ); //
 
 [Return to Table of Contents](#toc)
 
-# Observer Pattern<a name="observer"></a>
+<a name="observer"></a>
+# Observer Pattern
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#observerpatternjavascript).
 
@@ -515,7 +520,8 @@ It's one of the easier design patterns to get started with but also one of the m
 
 [Return to Table of Contents](#toc)
 
-# Mediator Pattern<a name="mediator"></a>
+<a name="mediator"></a>
+# Mediator Pattern
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#mediatorpatternjavascript).
 
