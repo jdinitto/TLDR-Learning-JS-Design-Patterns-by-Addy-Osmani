@@ -51,5 +51,3 @@ When working with the Module pattern, we may find it useful to define a simple t
 
 ### Disadvantages
 - inability to create automated unit tests for private members and additional complexity when bugs require hot fixes.
-
-[Back to Table of Contents](#toc)
