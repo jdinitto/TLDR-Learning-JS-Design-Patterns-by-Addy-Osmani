@@ -139,3 +139,378 @@ When working with the Module pattern, we may find it useful to define a simple t
 - inability to create automated unit tests for private members and additional complexity when bugs require hot fixes.
 
 [Return to Table of Contents](#toc)
+
+# Revealing Module Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript).
+
+### TL;DR
+
+This is a pattern where we would simply define all of our functions and variables in the private scope and return an anonymous object with pointers to the private functionality we wished to reveal as public.
+
+```javascript
+
+    var myRevealingModule = (function () {
+
+        var privateVar = "Ben Cherry",
+            publicVar = "Hey there!";
+
+        function privateFunction() {
+            console.log("Name:" + privateVar);
+        }
+
+        function publicSetName(strName) {
+            privateVar = strName;
+        }
+
+        function publicGetName() {
+            privateFunction();
+        }
+
+
+        // Reveal public pointers to
+        // private functions and properties
+
+        return {
+            setName: publicSetName,
+            greeting: publicVar,
+            getName: publicGetName
+        };
+
+    })();
+
+myRevealingModule.setName("Paul Kinlan");
+
+```
+
+### Advantages
+- This pattern allows the syntax of our scripts to be more consistent. It also makes it more clear at the end of the module which of our functions and variables may be accessed publicly which eases readability.
+
+### Disadvantages
+- A disadvantage of this pattern is that if a private function refers to a public function, that public function can't be overridden if a patch is necessary. This is because the private function will continue to refer to the private implementation and the pattern doesn't apply to public members, only to functions.
+
+[Return to Table of Contents](#toc)
+
+# Singleton Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#singletonpatternjavascript).
+
+### TL;DR
+
+The Singleton pattern is thus known because it restricts instantiation of a class to a single object. Singleton can be implemented by creating a class with a method that creates a new instance of the class if one doesn't exist. In the event of an instance already existing, it simply returns a reference to that object.
+
+```javascript
+
+var mySingleton = (function () {
+
+  // Instance stores a reference to the Singleton
+  var instance;
+
+  function init() {
+
+    // Singleton
+
+    // Private methods and variables
+    function privateMethod(){
+        console.log( "I am private" );
+    }
+
+    var privateVariable = "Im also private";
+
+    var privateRandomNumber = Math.random();
+
+    return {
+
+      // Public methods and variables
+      publicMethod: function () {
+        console.log( "The public can see me!" );
+      },
+
+      publicProperty: "I am also public",
+
+      getRandomNumber: function() {
+        return privateRandomNumber;
+      }
+
+    };
+
+  };
+
+  return {
+
+    // Get the Singleton instance if one exists
+    // or create one if it doesn't
+    getInstance: function () {
+
+      if ( !instance ) {
+        instance = init();
+      }
+
+      return instance;
+    }
+
+  };
+
+})();
+
+var myBadSingleton = (function () {
+
+  // Instance stores a reference to the Singleton
+  var instance;
+
+  function init() {
+
+    // Singleton
+
+    var privateRandomNumber = Math.random();
+
+    return {
+
+      getRandomNumber: function() {
+        return privateRandomNumber;
+      }
+
+    };
+
+  };
+
+  return {
+
+    // Always create a new Singleton instance
+    getInstance: function () {
+
+      instance = init();
+
+      return instance;
+    }
+
+  };
+
+})();
+
+
+// Usage:
+
+var singleA = mySingleton.getInstance();
+var singleB = mySingleton.getInstance();
+console.log( singleA.getRandomNumber() === singleB.getRandomNumber() ); // true
+
+var badSingleA = myBadSingleton.getInstance();
+var badSingleB = myBadSingleton.getInstance();
+console.log( badSingleA.getRandomNumber() !== badSingleB.getRandomNumber() ); // true
+
+// Note: as we are working with random numbers, there is a
+// mathematical possibility both numbers will be the same,
+// however unlikely. The above example should otherwise still
+// be valid.
+
+```
+
+
+### Advantages
+- In practice, the Singleton pattern is useful when exactly one object is needed to coordinate others across a system
+- There must be exactly one instance of a class, and it must be accessible to clients from a well-known access point.
+
+### Disadvantages
+- often an indication that modules in a system are either tightly coupled or that logic is overly spread across multiple parts of a codebase.
+- Singletons can be more difficult to test due to issues ranging from hidden dependencies, the difficulty in creating multiple instances, difficulty in stubbing dependencies and so on.
+
+[Return to Table of Contents](#toc)
+
+# Observer Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#observerpatternjavascript).
+
+### TL;DR
+
+The Observer is a design pattern where an object (known as a subject) maintains a list of objects depending on it (observers), automatically notifying them of any changes to state.
+
+When a subject needs to notify observers about something interesting happening, it broadcasts a notification to the observers (which can include specific data related to the topic of the notification).
+
+When we no longer wish for a particular observer to be notified of changes by the subject they are registered with, the subject can remove them from the list of observers.
+
+### Differences Between The Observer And Publish/Subscribe Pattern
+
+Whilst very similar, there are differences between these patterns worth noting.
+
+- The Observer pattern requires that the observer (or object) wishing to receive topic notifications must subscribe this interest to the object firing the event (the subject).
+- The Publish/Subscribe pattern however uses a topic/event channel which sits between the objects wishing to receive notifications (subscribers) and the object firing the event (the publisher).
+
+### Examples
+
+The minimalist version of Publish/Subscribe I released on GitHub under a project called [pubsubz](http://github.com/addyosmani/pubsubz). This demonstrates the core concepts of subscribe, publish as well as the concept of unsubscribing.
+
+```javascript
+var pubsub = {};
+ 
+(function(myObject) {
+ 
+    // Storage for topics that can be broadcast
+    // or listened to
+    var topics = {};
+ 
+    // An topic identifier
+    var subUid = -1;
+ 
+    // Publish or broadcast events of interest
+    // with a specific topic name and arguments
+    // such as the data to pass along
+    myObject.publish = function( topic, args ) {
+ 
+        if ( !topics[topic] ) {
+            return false;
+        }
+ 
+        var subscribers = topics[topic],
+            len = subscribers ? subscribers.length : 0;
+ 
+        while (len--) {
+            subscribers[len].func( topic, args );
+        }
+ 
+        return this;
+    };
+ 
+    // Subscribe to events of interest
+    // with a specific topic name and a
+    // callback function, to be executed
+    // when the topic/event is observed
+    myObject.subscribe = function( topic, func ) {
+ 
+        if (!topics[topic]) {
+            topics[topic] = [];
+        }
+ 
+        var token = ( ++subUid ).toString();
+        topics[topic].push({
+            token: token,
+            func: func
+        });
+        return token;
+    };
+ 
+    // Unsubscribe from a specific
+    // topic, based on a tokenized reference
+    // to the subscription
+    myObject.unsubscribe = function( token ) {
+        for ( var m in topics ) {
+            if ( topics[m] ) {
+                for ( var i = 0, j = topics[m].length; i < j; i++ ) {
+                    if ( topics[m][i].token === token ) {
+                        topics[m].splice( i, 1 );
+                        return token;
+                    }
+                }
+            }
+        }
+        return this;
+    };
+}( pubsub ));
+
+```
+*Example: Using Our Implementation*
+
+``` javascript
+// Another simple message handler
+ 
+// A simple message logger that logs any topics and data received through our
+// subscriber
+var messageLogger = function ( topics, data ) {
+    console.log( "Logging: " + topics + ": " + data );
+};
+ 
+// Subscribers listen for topics they have subscribed to and
+// invoke a callback function (e.g messageLogger) once a new
+// notification is broadcast on that topic
+var subscription = pubsub.subscribe( "inbox/newMessage", messageLogger );
+ 
+// Publishers are in charge of publishing topics or notifications of
+// interest to the application. e.g:
+ 
+pubsub.publish( "inbox/newMessage", "hello world!" );
+ 
+// or
+pubsub.publish( "inbox/newMessage", ["test", "a", "b", "c"] );
+ 
+// or
+pubsub.publish( "inbox/newMessage", {
+  sender: "hello@google.com",
+  body: "Hey again!"
+});
+ 
+// We can also unsubscribe if we no longer wish for our subscribers
+// to be notified
+pubsub.unsubscribe( subscription );
+ 
+// Once unsubscribed, this for example won't result in our
+// messageLogger being executed as the subscriber is
+// no longer listening
+pubsub.publish( "inbox/newMessage", "Hello! are you still there?" );
+```
+
+*Example: Decoupling applications using Ben Alman's Pub/Sub implementation*
+
+```javascript
+;(function( $ ) {
+ 
+  // Pre-compile templates and "cache" them using closure
+  var
+    userTemplate = _.template($( "#userTemplate" ).html()),
+    ratingsTemplate = _.template($( "#ratingsTemplate" ).html());
+ 
+  // Subscribe to the new user topic, which adds a user
+  // to a list of users who have submitted reviews
+  $.subscribe( "/new/user", function( e, data ){
+ 
+    if( data ){
+ 
+      $('#users').append( userTemplate( data ));
+ 
+    }
+ 
+  });
+ 
+  // Subscribe to the new rating topic. This is composed of a title and
+  // rating. New ratings are appended to a running list of added user
+  // ratings.
+  $.subscribe( "/new/rating", function( e, data ){
+ 
+    if( data ){
+ 
+      $( "#ratings" ).append( ratingsTemplate( data ) );
+ 
+    }
+ 
+  });
+ 
+  // Handler for adding a new user
+  $("#add").on("click", function( e ) {
+ 
+    e.preventDefault();
+ 
+    var strUser = $("#twitter_handle").val(),
+       strMovie = $("#movie_seen").val(),
+       strRating = $("#movie_rating").val();
+ 
+    // Inform the application a new user is available
+    $.publish( "/new/user", { name: strUser } );
+ 
+    // Inform the app a new rating is available
+    $.publish( "/new/rating", { title: strMovie, rating: strRating} );
+ 
+    });
+ 
+})( jQuery );
+```
+
+It's one of the easier design patterns to get started with but also one of the most powerful.
+
+### Advantages
+- Encourage us to think hard about the relationships between different parts of our application.
+- Effectively could be used to break down an application into smaller, more loosely coupled blocks to improve code management and potentials for re-use.
+- one of the best tools for designing decoupled systems and should be considered an important tool in any JavaScript developer's utility belt.
+
+### Disadvantages
+- In Publish/Subscribe, by decoupling publishers from subscribers, it can sometimes become difficult to obtain guarantees that particular parts of our applications are functioning as we may expect.
+
+[Return to Table of Contents](#toc)
