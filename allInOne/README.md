@@ -33,20 +33,20 @@ Behavioral patterns focus on improving or streamlining the communication between
 
 Patterns: *Iterator, Mediator, Observer and Visitor*
 
-# Design Patterns
+# Design Patterns<a name="toc"></a>
 - [Constructor Pattern](#constructor)
-- [Module Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/module-pattern.md)
-- [Revealing Module Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/revealing-module-pattern.md)
-- [Singleton Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/singleton-pattern.md)
-- [Observer Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/observer-pattern.md)
-- [Mediator Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/mediator-pattern.md)
-- [Prototype Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/prototype-pattern.md)
-- [Command Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/command-pattern.md)
-- [Facade Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/facade-pattern.md)
-- [Factory Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/factory-pattern.md)
-- [Mixin Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/mixin-pattern.md)
-- [Decorator Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/decorator-pattern.md)
-- [Flyweight Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/flyweight-pattern.md)
+- [Module Pattern](#module)
+- [Revealing Module Pattern](#revealing-module)
+- [Singleton Pattern](#singleton)
+- [Observer Pattern](#observer)
+- [Mediator Pattern](#mediator)
+- [Prototype Pattern](#prototype)
+- [Command Pattern](#command)
+- [Facade Pattern](#facade)
+- [Factory Pattern](#factory)
+- [Mixin Pattern](#mixin)
+- [Decorator Pattern](#decorator)
+- [Flyweight Pattern](#flyweight)
 
 # Constructor Pattern<a name="constructor"></a>
 
