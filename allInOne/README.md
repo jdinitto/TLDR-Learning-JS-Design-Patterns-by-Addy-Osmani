@@ -1,9 +1,5 @@
 
-# A Fork of "TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani"
-
-An "all-in-one" README!
-
---------
+# An All-In-One Markdown Fork of "TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani"
 
 A **too long; didn't read** summary of the book [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) by [Addy Osmani](https://github.com/addyosmani)
 
@@ -14,6 +10,8 @@ A **too long; didn't read** summary of the book [Learning JavaScript Design Patt
 Don't be shy! Lets make the docs better to help out our other fellow devs to learn design patterns in JavaScript.
 
 Please do review the [book](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) first before making any PR fixes/additions to the `master`. Thanks!
+
+---
 
 # Anti-Patterns
 - Bad solution to a particular problem. 
