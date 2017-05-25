@@ -50,7 +50,8 @@ Don't be shy! Lets make the docs better to help out our other fellow devs to lea
 
 Please do review the [book](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) first before making any PR fixes/additions to the `master`. Thanks!
 
-# [Constructor Pattern](#constructor)
+# Constructor Pattern
+<a name="constructor"></a>
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript).
 
