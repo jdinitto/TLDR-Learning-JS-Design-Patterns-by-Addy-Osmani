@@ -9,6 +9,12 @@ A **too long; didn't read** summary of the book [Learning JavaScript Design Patt
 
 [![img](http://akamaicovers.oreilly.com/images/0636920025832/cat.gif)](http://addyosmani.com/resources/essentialjsdesignpatterns/book/)
 
+# Contributing
+
+Don't be shy! Lets make the docs better to help out our other fellow devs to learn design patterns in JavaScript.
+
+Please do review the [book](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) first before making any PR fixes/additions to the `master`. Thanks!
+
 # Anti-Patterns
 - Bad solution to a particular problem. 
 - Knowledge of anti-patterns is critical for success. Once we are able to recognize such anti-patterns, we're able to refactor our code to negate them so that the overall quality of our solutions improves instantly.
@@ -44,14 +50,7 @@ Patterns: *Iterator, Mediator, Observer and Visitor*
 - [Decorator Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/decorator-pattern.md)
 - [Flyweight Pattern](https://github.com/jdinitto/TLDR-Learning-JS-Design-Patterns-by-Addy-Osmani/tree/master/design-patterns/flyweight-pattern.md)
 
-# Contributing
-
-Don't be shy! Lets make the docs better to help out our other fellow devs to learn design patterns in JavaScript.
-
-Please do review the [book](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript) first before making any PR fixes/additions to the `master`. Thanks!
-
-# Constructor Pattern
-<a name="constructor"></a>
+# Constructor Pattern<a name="constructor"></a>
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript).
 
