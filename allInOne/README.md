@@ -653,3 +653,543 @@ car.getModel();
 - It is worth noting that prototypal relationships can cause trouble when enumerating properties of objects and (as Crockford recommends) wrapping the contents of the loop in a `hasOwnProperty()` check. 
 
 [Return to Table of Contents](#toc)
+
+<a name="command"></a>
+# Command Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#commandpatternjavascript).
+
+### TL;DR
+
+The Command pattern aims to encapsulate method invocation, requests or operations into a single object and gives us the ability to both parameterize and pass method calls around that can be executed at our discretion. 
+
+It provides us a means to separate the responsibilities of issuing commands from anything executing commands, delegating this responsibility to different objects instead. They consistently include an execution operation (such as run() or execute()).
+
+###Example
+
+```javascript
+(function(){
+ 
+  var carManager = {
+ 
+    // request information
+    requestInfo: function( model, id ){
+      return "The information for " + model + " with ID " + id + " is foobar";
+    },
+ 
+    // purchase the car
+    buyVehicle: function( model, id ){
+      return "You have successfully purchased Item " + id + ", a " + model;
+    },
+ 
+    // arrange a viewing
+    arrangeViewing: function( model, id ){
+      return "You have successfully booked a viewing of " + model + " ( " + id + " ) ";
+    }
+ 
+  };
+ 
+})();
+```
+
+Here is what we would like to be able to achieve:
+
+```javascript
+carManager.execute( "buyVehicle", "Ford Escort", "453543" );
+```
+
+As per this structure we should now add a definition for the carManager.execute method as follows:
+
+```javascript
+carManager.execute = function ( name ) {
+    return carManager[name] && carManager[name].apply( carManager, [].slice.call(arguments, 1) );
+};
+```
+
+Our final sample calls would thus look as follows:
+
+```javascript
+carManager.execute( "arrangeViewing", "Ferrari", "14523" );
+carManager.execute( "requestInfo", "Ford Mondeo", "54323" );
+carManager.execute( "requestInfo", "Ford Escort", "34232" );
+carManager.execute( "buyVehicle", "Ford Escort", "34232" );
+```
+
+### Advantages
+- it enables us to decouple objects invoking the action from the objects which implement them, giving us a greater degree of overall flexibility in swapping out concrete classes (objects).
+
+[Return to Table of Contents](#toc)
+
+<a name="facade"></a>
+# Facade Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#facadepatternjavascript).
+
+### TL;DR
+
+This pattern provides a convenient higher-level interface to a larger body of code, hiding its true underlying complexity. Think of it as simplifying the API being presented to other developers, something which almost always improves usability.
+
+Whenever we use jQuery's `$(el).css()` or `$(el).animate()` methods, we're actually using a Facade - the simpler public interface that avoids us having to manually call the many internal methods in jQuery core required to get some behavior working. This also avoids the need to manually interact with DOM APIs and maintain state variables.
+
+We're all familiar with jQuery's `$(document).ready(..)`. Internally, this is actually being powered by a method called bindReady(), which is doing this:
+
+```javascript
+bindReady: function() {
+    ...
+    if ( document.addEventListener ) {
+      // Use the handy event callback
+      document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+ 
+      // A fallback to window.onload, that will always work
+      window.addEventListener( "load", jQuery.ready, false );
+ 
+    // If IE event model is used
+    } else if ( document.attachEvent ) {
+ 
+      document.attachEvent( "onreadystatechange", DOMContentLoaded );
+ 
+      // A fallback to window.onload, that will always work
+      window.attachEvent( "onload", jQuery.ready );
+               ...
+```
+
+This is another example of a Facade, where the rest of the world simply uses the limited interface exposed by `$(document).ready(..)` and the more complex implementation powering it is kept hidden from sight.
+
+### Disadvantages
+Facades generally have few disadvantages, but one concern worth noting is performance. Namely, one must determine whether there is an implicit cost to the abstraction a Facade offers to our implementation and if so, whether this cost is justifiable.
+
+[Return to Table of Contents](#toc)
+
+<a name="factory"></a>
+# Factory Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#factorypatternjavascript).
+
+### TL;DR
+
+The Factory pattern is another creational pattern concerned with the notion of creating objects. Where it differs from the other patterns in its category is that it doesn't explicitly require us use a constructor. Instead, a Factory can provide a generic interface for creating objects, where we can specify the type of factory object we wish to be created.
+
+This pattern is particularly useful if the object creation process is relatively complex, e.g. if it strongly depends on dynamic factors or application configuration.
+
+###Example
+
+```javascript
+// Types.js - Constructors used behind the scenes
+ 
+// A constructor for defining new cars
+function Car( options ) {
+ 
+  // some defaults
+  this.doors = options.doors || 4;
+  this.state = options.state || "brand new";
+  this.color = options.color || "silver";
+ 
+}
+ 
+// A constructor for defining new trucks
+function Truck( options){
+ 
+  this.state = options.state || "used";
+  this.wheelSize = options.wheelSize || "large";
+  this.color = options.color || "blue";
+}
+ 
+ 
+// FactoryExample.js
+ 
+// Define a skeleton vehicle factory
+function VehicleFactory() {}
+ 
+// Define the prototypes and utilities for this factory
+ 
+// Our default vehicleClass is Car
+VehicleFactory.prototype.vehicleClass = Car;
+ 
+// Our Factory method for creating new Vehicle instances
+VehicleFactory.prototype.createVehicle = function ( options ) {
+ 
+  switch(options.vehicleType){
+    case "car":
+      this.vehicleClass = Car;
+      break;
+    case "truck":
+      this.vehicleClass = Truck;
+      break;
+    //defaults to VehicleFactory.prototype.vehicleClass (Car)
+  }
+ 
+  return new this.vehicleClass( options );
+ 
+};
+ 
+// Create an instance of our factory that makes cars
+var carFactory = new VehicleFactory();
+var car = carFactory.createVehicle( {
+            vehicleType: "car",
+            color: "yellow",
+            doors: 6 } );
+ 
+// Test to confirm our car was created using the vehicleClass/prototype Car
+ 
+// Outputs: true
+console.log( car instanceof Car );
+ 
+// Outputs: Car object of color "yellow", doors: 6 in a "brand new" state
+console.log( car );
+```
+***Approach #1: Modify a VehicleFactory instance to use the Truck class***
+
+```javascript
+var movingTruck = carFactory.createVehicle( {
+                      vehicleType: "truck",
+                      state: "like new",
+                      color: "red",
+                      wheelSize: "small" } );
+ 
+// Test to confirm our truck was created with the vehicleClass/prototype Truck
+ 
+// Outputs: true
+console.log( movingTruck instanceof Truck );
+ 
+// Outputs: Truck object of color "red", a "like new" state
+// and a "small" wheelSize
+console.log( movingTruck );
+```
+
+***Approach #2: Subclass VehicleFactory to create a factory class that builds Trucks***
+
+```javascript
+function TruckFactory () {}
+TruckFactory.prototype = new VehicleFactory();
+TruckFactory.prototype.vehicleClass = Truck;
+ 
+var truckFactory = new TruckFactory();
+var myBigTruck = truckFactory.createVehicle( {
+                    state: "omg..so bad.",
+                    color: "pink",
+                    wheelSize: "so big" } );
+ 
+// Confirms that myBigTruck was created with the prototype Truck
+// Outputs: true
+console.log( myBigTruck instanceof Truck );
+ 
+// Outputs: Truck object with the color "pink", wheelSize "so big"
+// and state "omg. so bad"
+console.log( myBigTruck );
+```
+
+### Disadvantages
+- Due to the fact that the process of object creation is effectively abstracted behind an interface, this can also introduce problems with unit testing depending on just how complex this process might be.
+
+[Return to Table of Contents](#toc)
+
+<a name="mixin"></a>
+# Mixin Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#mixinpatternjavascript).
+
+### TL;DR
+
+In JavaScript, we can look at inheriting from Mixins as a means of collecting functionality through extension. Mixins allow objects to borrow (or inherit) functionality from them with a minimal amount of complexity. As the pattern works well with JavaScripts object prototypes, it gives us a fairly flexible way to share functionality from not just one Mixin, but effectively many through multiple inheritance.
+
+They can be viewed as objects with attributes and methods that can be easily shared across a number of other object prototypes.
+
+### Example 
+```javascript
+var myMixins = {
+ 
+  moveUp: function(){
+    console.log( "move up" );
+  },
+ 
+  moveDown: function(){
+    console.log( "move down" );
+  },
+ 
+  stop: function(){
+    console.log( "stop! in the name of love!" );
+  }
+ 
+};
+```
+We can then easily extend the prototype of existing constructor functions to include this behavior using a helper such as the Underscore.js `_.extend()` method:
+
+```javascript
+// A skeleton carAnimator constructor
+function CarAnimator(){
+  this.moveLeft = function(){
+    console.log( "move left" );
+  };
+}
+ 
+// A skeleton personAnimator constructor
+function PersonAnimator(){
+  this.moveRandomly = function(){ /*..*/ };
+}
+ 
+// Extend both constructors with our Mixin
+_.extend( CarAnimator.prototype, myMixins );
+_.extend( PersonAnimator.prototype, myMixins );
+ 
+// Create a new instance of carAnimator
+var myAnimator = new CarAnimator();
+myAnimator.moveLeft();
+myAnimator.moveDown();
+myAnimator.stop();
+ 
+// Outputs:
+// move left
+// move down
+// stop! in the name of love!
+```
+
+### Advantages
+- Mixins assist in decreasing functional repetition and increasing function re-use in a system.
+
+### Disadvantages
+- Some developers feel that injecting functionality into an object prototype is a bad idea as it leads to both prototype pollution and a level of uncertainty regarding the origin of our functions. In large systems this may well be the case.
+
+[Return to Table of Contents](#toc)
+
+<a name="decorator"></a>
+# Decorator Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#decoratorpatternjavascript).
+
+### TL;DR
+
+Similar to Mixins, they can be considered another viable alternative to object sub-classing. They can be used to modify existing systems where we wish to add additional features to objects without the need to heavily modify the underlying code using them.
+
+The Decorator pattern isn't heavily tied to how objects are created but instead focuses on the problem of extending their functionality. Rather than just relying on prototypal inheritance, we work with a single base object and progressively add decorator objects which provide the additional capabilities. The idea is that rather than sub-classing, we add (decorate) properties or methods to a base object so it's a little more streamlined.
+
+```javascript
+// The constructor to decorate
+function MacBook() {
+ 
+  this.cost = function () { return 997; };
+  this.screenSize = function () { return 11.6; };
+ 
+}
+ 
+// Decorator 1
+function memory( macbook ) {
+ 
+  var v = macbook.cost();
+  macbook.cost = function() {
+    return v + 75;
+  };
+ 
+}
+ 
+// Decorator 2
+function engraving( macbook ){
+ 
+  var v = macbook.cost();
+  macbook.cost = function(){
+    return v + 200;
+  };
+ 
+}
+ 
+// Decorator 3
+function insurance( macbook ){
+ 
+  var v = macbook.cost();
+  macbook.cost = function(){
+     return v + 250;
+  };
+ 
+}
+ 
+var mb = new MacBook();
+memory( mb );
+engraving( mb );
+insurance( mb );
+ 
+// Outputs: 1522
+console.log( mb.cost() );
+ 
+// Outputs: 11.6
+console.log( mb.screenSize() );
+```
+
+In the above example, our Decorators are overriding the `MacBook()` super-class objects `.cost()` function to return the current price of the `Macbook` plus the cost of the upgrade being specified.
+
+It's considered a decoration as the original `Macbook` objects constructor methods which are not overridden (e.g. `screenSize()`) as well as any other properties which we may define as a part of the `Macbook` remain unchanged and intact.
+
+### Advantages
+- Fairly flexible. As we've seen, objects can be wrapped or "decorated" with new behavior and then continue to be used without needing to worry about the base object being modified.
+- In a broader context, this pattern also avoids us needing to rely on large numbers of subclasses to get the same benefits.
+
+### Disadvantages
+-  If poorly managed, it can significantly complicate our application architecture as it introduces many small, but similar objects into our namespace.
+
+[Return to Table of Contents](#toc)
+
+<a name="flyweight"></a>
+# Flyweight Pattern
+
+For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#detailflyweight).
+
+### TL;DR
+
+The Flyweight pattern is a classical structural solution for optimizing code that is repetitive, slow and inefficiently shares data. It aims to minimize the use of memory in an application by sharing as much data as possible with related objects (e.g application configuration, state and so on).
+
+### Flyweight's State Concepts
+- **Intrinsic** - Intrinsic information may be required by internal methods in our objects which they absolutely cannot function without
+- **Extrinsic** - Extrinsic information can however be removed and stored externally.
+
+Next, let's continue our look at Flyweights by implementing a system to manage all of the books in a library.
+
+```javascript
+var Book = function( id, title, author, genre, pageCount,publisherID, ISBN, checkoutDate, checkoutMember, dueReturnDate,availability ){
+
+   this.id = id;
+   this.title = title;
+   this.author = author;
+   this.genre = genre;
+   this.pageCount = pageCount;
+   this.publisherID = publisherID;
+   this.ISBN = ISBN;
+   this.checkoutDate = checkoutDate;
+   this.checkoutMember = checkoutMember;
+   this.dueReturnDate = dueReturnDate;
+   this.availability = availability;
+
+};
+
+Book.prototype = {
+
+  getTitle: function () {
+     return this.title;
+  },
+
+  getAuthor: function () {
+     return this.author;
+  },
+
+  getISBN: function (){
+     return this.ISBN;
+  },
+
+  // For brevity, other getters are not shown
+  updateCheckoutStatus: function( bookID, newStatus, checkoutDate, checkoutMember, newReturnDate ){
+
+     this.id = bookID;
+     this.availability = newStatus;
+     this.checkoutDate = checkoutDate;
+     this.checkoutMember = checkoutMember;
+     this.dueReturnDate = newReturnDate;
+
+  },
+
+  extendCheckoutPeriod: function( bookID, newReturnDate ){
+
+      this.id = bookID;
+      this.dueReturnDate = newReturnDate;
+
+  },
+
+  isPastDue: function(bookID){
+
+     var currentDate = new Date();
+     return currentDate.getTime() > Date.parse( this.dueReturnDate );
+
+   }
+};
+```
+
+This probably works fine initially for small collections of books, however as the library expands to include a larger inventory with multiple versions and copies of each book available, we may find the management system running slower and slower over time.
+
+We can now separate our data into intrinsic and extrinsic states as follows: data relevant to the book object (`title`, `author`, etc) is intrinsic whilst the checkout data (`checkoutMember`, `dueReturnDate`, etc) is considered extrinsic.
+
+```javascript
+// Flyweight optimized version
+var Book = function ( title, author, genre, pageCount, publisherID, ISBN ) {
+
+    this.title = title;
+    this.author = author;
+    this.genre = genre;
+    this.pageCount = pageCount;
+    this.publisherID = publisherID;
+    this.ISBN = ISBN;
+
+};
+```
+
+As we can see, the extrinsic states have been removed. Everything to do with library check-outs will be moved to a manager and as the object data is now segmented, a factory can be used for instantiation.
+
+*A basic Factory*
+```javascript
+// Book Factory singleton
+var BookFactory = (function () {
+  var existingBooks = {}, existingBook;
+
+  return {
+    createBook: function ( title, author, genre, pageCount, publisherID, ISBN ) {
+
+      // Find out if a particular book meta-data combination has been created before
+      // !! or (bang bang) forces a boolean to be returned
+      existingBook = existingBooks[ISBN];
+      if ( !!existingBook ) {
+        return existingBook;
+      } else {
+
+        // if not, let's create a new instance of the book and store it
+        var book = new Book( title, author, genre, pageCount, publisherID, ISBN );
+        existingBooks[ISBN] = book;
+        return book;
+
+      }
+    }
+  };
+
+})();
+```
+
+*Managing the Extrinsic States*
+```javascript
+// BookRecordManager singleton
+var BookRecordManager = (function () {
+
+  var bookRecordDatabase = {};
+
+  return {
+    // add a new book into the library system
+    addBookRecord: function ( id, title, author, genre, pageCount, publisherID, ISBN, checkoutDate, checkoutMember, dueReturnDate, availability ) {
+
+      var book = bookFactory.createBook( title, author, genre, pageCount, publisherID, ISBN );
+
+      bookRecordDatabase[id] = {
+        checkoutMember: checkoutMember,
+        checkoutDate: checkoutDate,
+        dueReturnDate: dueReturnDate,
+        availability: availability,
+        book: book
+      };
+    },
+    updateCheckoutStatus: function ( bookID, newStatus, checkoutDate, checkoutMember, newReturnDate ) {
+
+      var record = bookRecordDatabase[bookID];
+      record.availability = newStatus;
+      record.checkoutDate = checkoutDate;
+      record.checkoutMember = checkoutMember;
+      record.dueReturnDate = newReturnDate;
+    },
+
+    extendCheckoutPeriod: function ( bookID, newReturnDate ) {
+      bookRecordDatabase[bookID].dueReturnDate = newReturnDate;
+    },
+
+    isPastDue: function ( bookID ) {
+      var currentDate = new Date();
+      return currentDate.getTime() > Date.parse( bookRecordDatabase[bookID].dueReturnDate );
+    }
+  };
+
+})();
+```
+
+The result of these changes is that all of the data that's been extracted from the Book class is now being stored in an attribute of the BookManager singleton (BookDatabase) - something considerably more efficient than the large number of objects we were previously using. Methods related to book checkouts are also now based here as they deal with data that's extrinsic rather than intrinsic.
+
+[Return to Table of Contents](#toc)
