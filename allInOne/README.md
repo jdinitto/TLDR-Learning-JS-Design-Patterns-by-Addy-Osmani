@@ -84,7 +84,7 @@ Above, a single instance of toString() will now be shared between all of the Car
 
 [Return to Table of Contents](#toc)
 
-# Module Pattern
+# Module Pattern<a name="module"></a>
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
 
@@ -140,7 +140,7 @@ When working with the Module pattern, we may find it useful to define a simple t
 
 [Return to Table of Contents](#toc)
 
-# Revealing Module Pattern
+# Revealing Module Pattern<a name="revealing-module"></a>
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript).
 
@@ -191,7 +191,7 @@ myRevealingModule.setName("Paul Kinlan");
 
 [Return to Table of Contents](#toc)
 
-# Singleton Pattern
+# Singleton Pattern<a name="singleton"></a>
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#singletonpatternjavascript).
 
@@ -317,7 +317,7 @@ console.log( badSingleA.getRandomNumber() !== badSingleB.getRandomNumber() ); //
 
 [Return to Table of Contents](#toc)
 
-# Observer Pattern
+# Observer Pattern<a name="observer"></a>
 
 For complete reference, click [here](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#observerpatternjavascript).
 
